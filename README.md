@@ -23,7 +23,6 @@ Use ESP8266 to drive solar panel to solar.
 [5V继电器x1](https://detail.tmall.com/item.htm?id=15909056050&spm=a1z09.2.0.0.23362e8d39jsqp&_u=1ujvcor499d)
 
 [180度SG90舵机和云台](https://item.taobao.com/item.htm?spm=a230r.1.14.82.49532d31qkZ2OA&id=612463363006&ns=1&abbucket=3#detail)
-
 （我拆掉了上面的俯仰舵机和支架，然后用502把太阳能板黏在方位舵机支架上。你们大概会比我更有经验吧）
 
 跳线，硬纸板若干
