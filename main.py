@@ -23,9 +23,13 @@ Pwm=PWM(Pin(12))#Motor PWM
 Pwm.freq(50)
 Pwm.duty(75)
 Pwm.deinit()
-drive_motor()
-esp.deepsleep(20000000)
-machine.soft_reset()
+p2 = Pin(2, Pin.OUT) 
+while 1:
+    drive_motor()
+    utime.sleep_ms(10000)
+    p2.value(0)
+    utime.sleep_ms(200)
+    p2.value(1) 
 
     
 

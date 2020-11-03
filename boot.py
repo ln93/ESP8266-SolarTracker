@@ -12,12 +12,12 @@ def connect_and_sync():
     ap_if.active(True)
     ap_if.config(essid='Req_AP_SolarHost', channel=1)
     sta_if = network.WLAN(network.STA_IF)
+    p2 = Pin(2, Pin.OUT)   
     if not sta_if.isconnected():
         print('connecting to network...')
         sta_if.active(True)
         sta_if.connect('SolarHost', '')
-        while not sta_if.isconnected(): 
-            p2 = Pin(2, Pin.OUT)           
+        while not sta_if.isconnected():         
             p2.value(0)
             utime.sleep_ms(200)
             p2.value(1)
@@ -26,8 +26,9 @@ def connect_and_sync():
     sync_ntp()
     sta_if.active(False)
     ap_if.active(False)
-
-
+    p2.value(0)
+    utime.sleep_ms(3000)
+    p2.value(1)
 
 rtc = RTC()
 time = rtc.datetime()
