@@ -1,5 +1,5 @@
 import ntptime
-
+from machine import RTC
 def sync_ntp():   
     ntptime.NTP_DELTA = 3155644800   # 可选 UTC+8偏移时间（秒），不设置就是UTC0
     ntptime.host = 'ntp1.aliyun.com'  # 可选，ntp服务器，默认是"pool.ntp.org"
@@ -20,6 +20,10 @@ def connect_and_sync():
     sta_if.active(False)
 
 
-connect_and_sync()
+rtc = RTC()
+time = rtc.datetime()
+if(time[0]<2020):
+    print('Time is outdated, Updating...')
+    connect_and_sync()
 
 
