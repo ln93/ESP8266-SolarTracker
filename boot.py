@@ -2,10 +2,18 @@ import ntptime
 from machine import RTC,Pin
 import network
 import utime
-def sync_ntp():   
-    ntptime.NTP_DELTA = 3155644800   # 可选 UTC+8偏移时间（秒），不设置就是UTC0
+def sync_ntp():  
+    import ujson,urequests
+    js=urequests.get("http://ip-api.com/json")
+    parsed = ujson.loads(js.text)
+    lon=parsed["lon"]
+    print('Your lon is:'+str(lon))
+    ntptime.NTP_DELTA = 3155673600-int(lon*86400/360)   # 可选 UTC+8偏移时间（秒），不设置就是UTC0
     ntptime.host = 'ntp1.aliyun.com'  # 可选，ntp服务器，默认是"pool.ntp.org"
     ntptime.settime()   # 修改设备时间,到这就已经设置好了
+    rtc = RTC()
+    print('Local time(DST):')
+    print(rtc.datetime())
 
 def connect_and_sync():
     ap_if = network.WLAN(network.AP_IF)
@@ -35,12 +43,6 @@ time = rtc.datetime()
 if(time[0]<2020):
     print('Time is outdated, Updating...')
     connect_and_sync()
-else:
-    ap_if = network.WLAN(network.AP_IF)
-    ap_if.active(True)#it won't really show because 8266 would sleep quickly
-    ap_if.config(essid='SolarTrack_Working', channel=1)
-    utime.sleep_ms(500)
-
     
 
 
