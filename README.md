@@ -1,6 +1,6 @@
 # ESP8266-SolarTracker
-Use ESP8266 to drive solar panel to solar.
 
+![Use ESP8266 to drive solar panel to solar.](https://github.com/ln93/ESP8266-SolarTracker/blob/main/example.jpg)
 
 这是一个用小太阳能板对充电宝进行充电的项目。
 
