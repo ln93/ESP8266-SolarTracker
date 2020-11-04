@@ -27,7 +27,7 @@ Use ESP8266 to drive solar panel to solar.
 
 跳线，硬纸板若干
 
-紫米10号充电宝x1
+紫米10号充电宝x1（或者其他支持边冲边用，且具有小电流模式的充电宝。）
 
 [5W太阳能电池板（共享单车拆机型号，带稳压USB）x1](https://item.taobao.com/item.htm?spm=a1z09.2.0.0.23692e8dV7nGi3&id=611377225857&_u=1ujvcorba8b)
 
