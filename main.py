@@ -6,7 +6,7 @@ def drive_motor():
     rtc = RTC()
     time = rtc.datetime()
     if time[4] > 7 and time[4] < 17 and time[6] > 35:
-        Angle = ((time[4]*60+time[5])-7*60)*150/600#10 hrs a day
+        Angle = ((time[4]*60+time[5])-6*60)*150/600#10 hrs a day
         DutyNow = 1000*((90-Angle)/180 * 2+1.5)/20
         Pwm.duty(int(DutyNow))
         Pwm.init()
