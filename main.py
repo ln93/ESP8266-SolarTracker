@@ -29,7 +29,7 @@ def drive_motor():
     rtc = RTC()
     time = rtc.datetime()#year,month,day,weekday,hour,minute,sec,msec
 
-    if time[4] >= 7 and time[4] < 17 and loopcnt<1:
+    if time[4] >= 7 and time[4] < 17:
         Angle = 15+((time[4]*60+time[5])-7*60)*150/600#very simple, 10 hrs a day,from 15-165 deg
         motor_angle(Angle)
         sleep(120,10)
