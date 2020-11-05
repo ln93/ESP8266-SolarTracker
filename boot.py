@@ -2,11 +2,13 @@ import ntptime
 from machine import RTC,Pin
 import network
 import utime
+
 def sync_ntp():  
     import ujson,urequests
     js=urequests.get("http://ip-api.com/json")
     parsed = ujson.loads(js.text)
-    lon=parsed["lon"]
+    #lon=parsed["lon"]
+    lon=120#北京时间
     print('Your lon is:'+str(lon))
     ntptime.NTP_DELTA = 3155673600-int(lon*86400/360)   # 可选 UTC+8偏移时间（秒），不设置就是UTC0
     ntptime.host = 'ntp1.aliyun.com'  # 可选，ntp服务器，默认是"pool.ntp.org"
@@ -14,6 +16,7 @@ def sync_ntp():
     rtc = RTC()
     print('Local time(DST):')
     print(rtc.datetime())
+
 
 def connect_and_sync():
     ap_if = network.WLAN(network.AP_IF)
@@ -43,7 +46,9 @@ time = rtc.datetime()
 if(time[0]<2020):
     print('Time is outdated, Updating...')
     connect_and_sync()
-    
+print('Local time(DST):')
+print(rtc.datetime())
+
 
 
 
