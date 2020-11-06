@@ -11,6 +11,14 @@ def draw_sun(fb,x,y):
 def clear_left(fb):
     fb.fill_rect(0,0,55,55,0)
 
+def draw_wifi(fb,isconnecting):
+    if isconnecting==True:
+        draw_round(fb,66,40,2)
+        fb.line(66,43,66,49,1)
+        fb.line(62,39,62,41,1)
+        fb.line(70,39,70,41,1)
+    else:
+        fb.fill_rect(62,38,9,12,0)
 def draw_round(fb,x,y,r):
     for i in range(x-r-1,x+r+2):
         for j in range(y-r-1,y+r+2):

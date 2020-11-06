@@ -43,6 +43,28 @@ def drive_motor():
         oled.contrast(10)
         sleep(60,60)
 
+def time_sync():
+    import ntptime
+    import network
+    import utime
+    sta_if = network.WLAN(network.STA_IF)
+    p2 = Pin(2, Pin.OUT)   
+    if not sta_if.isconnected():
+        sta_if.active(True)
+        sta_if.connect('SolarHost', '')
+        while not sta_if.isconnected():         
+            draw.draw_wifi(oled,True)
+            oled.show()
+            p2.value(0)
+            utime.sleep_ms(200)
+            p2.value(1)
+            utime.sleep_ms(200)
+            pass
+    sync_ntp()
+    sta_if.active(False)
+    draw.draw_wifi(oled,False)
+    oled.show()
+
 
 Pwm=PWM(Pin(12))#Motor PWM
 Pwm.freq(50)
@@ -55,10 +77,10 @@ rtc = RTC()
 p=rtc.datetime()
 import draw
 draw.draw_pip(oled)
-oled.text('PipBoy',0,56,1)
+oled.text('PipSol',0,56,1)
 
-loopcnt=1000
-while loopcnt>0:
+loopcnt=1
+while 1:
     rtc = RTC()
     time = rtc.datetime()
     draw.clear_left(oled)
@@ -80,16 +102,12 @@ while loopcnt>0:
     oled.rect(5, 5, 50, 46, 1)
     draw.draw_battery(oled)
     oled.show()
-    drive_motor()
     loopcnt=loopcnt-1
+    if loopcnt<1:
+        time_sync()
+        loopcnt=1000
+    drive_motor()
 
-
-draw.clear_left(oled)
-oled.text('Prepare Sync...',10,10,1)
-utime.sleep_ms(2000)
-oled.text('Reset System',10,40,1)
-utime.sleep_ms(2000)
-machine.soft_reset()
     
 
     
