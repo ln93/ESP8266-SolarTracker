@@ -27,22 +27,21 @@ def drive_motor():
         Angle = 15+((time[4]*60+time[5])-7*60)*150/600#very simple, 10 hrs a day,from 15-165 deg
         if time[6]>45 and time[5]%2==0:
             motor_angle(Angle)
+            draw.draw_solarpanel(oled,Angle)
         sleep(10,10)
+        oled.contrast(100)
     elif time[4] < 7 and time[4] >= 5:
         if time[5]>58:
             motor_angle(15)#prepare for morning
-        sleep(10,10)
+            draw.draw_solarpanel(oled,15)
+        sleep(30,30)
     else:
         if time[5]>58:
             motor_angle(90)#if batterypack is down at night, solar panel should be on a neural position
             # and it is convenient for debug
-        sleep(10,10)
-
-def roboco_animate(string,line,len,delay):
-    for i in range(0,len):
-        oled.text(str(string[i]),8*i,line,1)
-        utime.sleep_ms(delay)
-        oled.show()
+            draw.draw_solarpanel(oled,90)
+        oled.contrast(10)
+        sleep(60,60)
 
 
 Pwm=PWM(Pin(12))#Motor PWM
@@ -52,33 +51,45 @@ Pwm.deinit()
 
 spi=SPI(1)
 oled=SSD1306_SPI(128,64,spi,Pin(4),Pin(5),Pin(15))
-roboco_animate('Pipboy-V1.1',10,11,80)
-utime.sleep_ms(1000)
-roboco_animate('Roboco Present',25,14,80)
-utime.sleep_ms(1000)
-roboco_animate('loading...',40,10,80)
 rtc = RTC()
 p=rtc.datetime()
 import draw
 draw.draw_pip(oled)
-oled.text(str(p[0]),10,10,1)
-oled.text(str(p[1])+'-'+str(p[2]),10,25,1)
-oled.text(str(p[4])+':'+str(p[5]),10,40,1)
-oled.text('PipBoyV1.1',0,56,1)
-oled.show()
+oled.text('PipBoy',0,56,1)
 
-
-loopcnt=1
-while 1:
+loopcnt=1000
+while loopcnt>0:
     rtc = RTC()
     time = rtc.datetime()
     draw.clear_left(oled)
-    oled.text(str(time[0]),10,10,1)
-    oled.text(str(time[1])+'-'+str(time[2]),10,25,1)
-    oled.text(str(time[4])+':'+str(time[5]),10,40,1)
+    oled.text(str(time[0]),14,10,1)
+    month=str(time[1])
+    day=str(time[2])
+    hour=str(time[4])
+    minute=str(time[5])
+    if(len(month)==1):
+        month=' '+month
+    if(len(day)==1):
+        day='0'+day
+    if(len(hour)==1):
+        hour=' '+hour
+    if(len(minute)==1):
+        minute='0'+minute
+    oled.text(month+'-'+day,10,25,1)
+    oled.text(hour+':'+minute,10,40,1)
     oled.rect(5, 5, 50, 46, 1)
+    draw.draw_battery(oled)
     oled.show()
     drive_motor()
+    loopcnt=loopcnt-1
+
+
+draw.clear_left(oled)
+oled.text('Prepare Sync...',10,10,1)
+utime.sleep_ms(2000)
+oled.text('Reset System',10,40,1)
+utime.sleep_ms(2000)
+machine.soft_reset()
     
 
     
