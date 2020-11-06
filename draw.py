@@ -22,4 +22,19 @@ def draw_pip(fb):
         for j in range(0,127):
             fb.pixel(j,i,1-int(f.read(1)))
     f.close()
+def draw_battery(fb):
+    import battery
+    percent=battery.get_battery()
+    fb.fill_rect(52,55,20,9,0)
+    fb.rect(52,55,20,9,1)
+    fb.fill_rect(54,57,int(16*percent/100),5,1)
+    fb.show()
+
+def draw_solarpanel(fb,angle):
+    fb.fill_rect(56,0,21,16,0)
+    fb.line(56,15-int(15*(angle/180)),76,int(15*(angle/180)),1)#panel
+    draw_round(fb,66,9,2)#axis
+    fb.line(56+7,0,56+7,3,1)#light
+    fb.line(56+10,0,56+10,3,1)#light
+    fb.line(56+13,0,56+13,3,1)#light
     
