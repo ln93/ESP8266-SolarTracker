@@ -9,7 +9,7 @@ def draw_sun(fb,x,y):
     fb.line(x+9,y-9,x+6,y-6,1)
     fb.line(x-9,y+9,x-6,y+6,1)
 def clear_left(fb):
-    fb.fill_rect(0,0,64,55,0)
+    fb.fill_rect(0,0,55,55,0)
 
 def draw_round(fb,x,y,r):
     for i in range(x-r-1,x+r+2):
