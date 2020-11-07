@@ -40,7 +40,7 @@ def connect_and_sync():
             p2.value(1)
             utime.sleep_ms(200)
             pass
-    roboco_animate('Connecting',55,10,80)
+    roboco_animate('Connecting...',55,13,80)
     sync_ntp()
     sta_if.active(False)
     ap_if.active(False)

@@ -4,6 +4,7 @@ import esp
 import utime
 from ssd1306 import SSD1306_SPI
 import draw
+import battery
 def motor_angle(ang):
     DutyNow = 1000*((90-ang)/180 * 2+1.5)/20
     Pwm.duty(int(DutyNow))
@@ -27,6 +28,7 @@ def drive_motor():
         Angle = 15+((time[4]*60+time[5])-7*60)*150/600#very simple, 10 hrs a day,from 15-165 deg
         if time[6]>45 and time[5]%2==0:
             motor_angle(Angle)
+            oled.invert(True)
             draw.draw_solarpanel(oled,Angle)
         sleep(10,10)
         oled.contrast(100)
@@ -41,8 +43,32 @@ def drive_motor():
             # and it is convenient for debug
             draw.draw_solarpanel(oled,90)
         oled.contrast(10)
+        oled.invert(False)
         sleep(60,60)
-
+def frame():
+    #if(battery.get_battery()<99.9):
+    #    oled.poweroff()#when using battery,only control solar panel,don't display
+    #    return
+    #oled.poweron()
+    draw.clear_left(oled)
+    oled.text(str(time[0]),14,10,1)
+    month=str(time[1])
+    day=str(time[2])
+    hour=str(time[4])
+    minute=str(time[5])
+    if(len(month)==1):
+        month=' '+month
+    if(len(day)==1):
+        day='0'+day
+    if(len(hour)==1):
+        hour=' '+hour
+    if(len(minute)==1):
+        minute='0'+minute
+    oled.text(month+'-'+day,10,25,1)
+    oled.text(hour+':'+minute,10,40,1)
+    oled.rect(5, 5, 50, 46, 1)
+    draw.draw_battery(oled)
+    oled.show()
 def time_sync():
     import ntptime
     import network
@@ -63,7 +89,6 @@ def time_sync():
     sync_ntp()
     sta_if.active(False)
     draw.draw_wifi(oled,False)
-    oled.show()
 
 
 Pwm=PWM(Pin(12))#Motor PWM
@@ -77,30 +102,14 @@ rtc = RTC()
 p=rtc.datetime()
 import draw
 draw.draw_pip(oled)
-oled.text('PipSol',0,56,1)
+oled.text('BAT:',4,56,1)
+oled.contrast(10)
 
 loopcnt=1
 while 1:
     rtc = RTC()
     time = rtc.datetime()
-    draw.clear_left(oled)
-    oled.text(str(time[0]),14,10,1)
-    month=str(time[1])
-    day=str(time[2])
-    hour=str(time[4])
-    minute=str(time[5])
-    if(len(month)==1):
-        month=' '+month
-    if(len(day)==1):
-        day='0'+day
-    if(len(hour)==1):
-        hour=' '+hour
-    if(len(minute)==1):
-        minute='0'+minute
-    oled.text(month+'-'+day,10,25,1)
-    oled.text(hour+':'+minute,10,40,1)
-    oled.rect(5, 5, 50, 46, 1)
-    draw.draw_battery(oled)
+    frame()
     oled.show()
     loopcnt=loopcnt-1
     if loopcnt<1:

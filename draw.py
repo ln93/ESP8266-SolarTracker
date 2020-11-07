@@ -33,9 +33,9 @@ def draw_pip(fb):
 def draw_battery(fb):
     import battery
     percent=battery.get_battery()
-    fb.fill_rect(52,55,20,9,0)
-    fb.rect(52,55,20,9,1)
-    fb.fill_rect(54,57,int(16*percent/100),5,1)
+    fb.fill_rect(35,55,20,9,0)
+    fb.rect(35,55,20,9,1)
+    fb.fill_rect(37,57,int(16*percent/100),5,1)
     fb.show()
 
 def draw_solarpanel(fb,angle):
