@@ -39,7 +39,7 @@
 
 ### 一些可以配置的参数
 
-boot.py：通过配置lon决定使用夏时制或北京时间。
+boot.py：通过配置lon（经度）决定使用太阳时或北京时间。
 
 main.py：通过配置battery.get_battery()的阈值决定何时低电量关屏。
 
