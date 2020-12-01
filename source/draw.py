@@ -26,6 +26,7 @@ def draw_round(fb,x,y,r):
                 fb.pixel(i,j,1)
 def draw_pip(fb):
     f=open("pip.txt")
+    #用文本文件存储128x64的图片，用字符0/1代表黑白，十分朴实。
     for i in range(0,63):
         for j in range(0,127):
             fb.pixel(j,i,1-int(f.read(1)))
@@ -33,13 +34,13 @@ def draw_pip(fb):
 def draw_battery(fb):
     import battery
     percent=battery.get_battery()
-    fb.fill_rect(35,55,20,9,0)
+    fb.fill_rect(35,55,20,9,0)#clear
     fb.rect(35,55,20,9,1)
     fb.fill_rect(37,57,int(16*percent/100),5,1)
     fb.show()
 
 def draw_solarpanel(fb,angle):
-    fb.fill_rect(56,0,21,16,0)
+    fb.fill_rect(56,0,21,16,0)#clear
     fb.line(56,15-int(15*(angle/180)),76,int(15*(angle/180)),1)#panel
     draw_round(fb,66,9,2)#axis
     fb.line(56+7,0,56+7,3,1)#light

@@ -46,7 +46,7 @@ def drive_motor():
         oled.invert(False)
         sleep(60,60)
 def frame():
-    if(battery.get_battery()<50):
+    if(battery.get_battery()<90):
         oled.poweroff()#when battery low, only control solar panel,don't display
         return
     oled.poweron()
@@ -75,20 +75,23 @@ def time_sync():
     import utime
     sta_if = network.WLAN(network.STA_IF)
     p2 = Pin(2, Pin.OUT)   
-    if not sta_if.isconnected():
+    if not sta_if.isconnected() :
         sta_if.active(True)
         sta_if.connect('SolarHost', '')
-        while not sta_if.isconnected():         
+        timeout=60
+        while ((not sta_if.isconnected()) or (timeout>0)):         
             draw.draw_wifi(oled,True)
             oled.show()
             p2.value(0)
             utime.sleep_ms(200)
             p2.value(1)
             utime.sleep_ms(200)
+            timeout=timeout-1
             pass
-    sync_ntp()
-    sta_if.active(False)
-    draw.draw_wifi(oled,False)
+        if(timeout>0):
+            sync_ntp()
+            sta_if.active(False)
+            draw.draw_wifi(oled,False)
 
 
 Pwm=PWM(Pin(12))#Motor PWM

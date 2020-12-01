@@ -5,14 +5,15 @@ import utime
 from ssd1306 import SSD1306_SPI
 def sync_ntp():  
     import ujson,urequests
-    js=urequests.get("http://ip-api.com/json")
+    js=urequests.get("http://ip-api.com/json") #根据ip判断经度的服务器。
     parsed = ujson.loads(js.text)
-    #lon=parsed["lon"]
-    lon=120#北京时间
+    lon=parsed["lon"] #太阳时间
+    #lon=120 #经度120即为北京时间
     print('Your lon is:'+str(lon))
-    ntptime.NTP_DELTA = 3155673600-int(lon*86400/360)   # 可选 UTC+8偏移时间（秒），不设置就是UTC0
-    ntptime.host = 'ntp1.aliyun.com'  # 可选，ntp服务器，默认是"pool.ntp.org"
-    ntptime.settime()   # 修改设备时间,到这就已经设置好了
+    roboco_animate('Your Ion:'+str(lon),55,14,80)
+    ntptime.NTP_DELTA = 3155673600-int(lon*86400/360)   # 根据经度设置本地时间
+    ntptime.host = 'ntp1.aliyun.com'  # NTP同步时间服务器
+    ntptime.settime()
     rtc = RTC()
     print('Local time(DST):')
     print(rtc.datetime())
@@ -40,7 +41,6 @@ def connect_and_sync():
             p2.value(1)
             utime.sleep_ms(200)
             pass
-    roboco_animate('Connecting...',55,13,80)
     sync_ntp()
     sta_if.active(False)
     ap_if.active(False)
